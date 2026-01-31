@@ -1,0 +1,45 @@
+﻿@model TareaModel
+@{
+    ViewData["Title"] = "Guardar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class=""card-header">   
+        Crear Tarea
+    </div>
+    <div class="card-body">
+        <form asp-action"Guardar" asp-controller="Mantenedor" method="post">
+            <div class="mb-3">
+                <label class="form-label">Nombre Tarea</label>
+                <input asp-for"NombreTarea" type="text" class="form-control" id="titulo" name="titulo" />
+                <span asp-validation-for"NombreTarea" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Categoria</label>
+                <select id="categoria" name="categoria" asp-for"IdCategoria" >
+                    <option value="1">Infraestructura</option>
+                    <option value="2">Base de datos</option>
+                    <option value="3">BackEnd</option>
+                    <option value="4">FrontEnd</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <select id="estado" name="estado" asp-for"IdCategoria">
+                    <option value="Iniciada">Iniciada</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Completada">Completada</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Fecha vencimiento</label>
+                <input asp-for"FechaVencimientoTarea" type="datetime" class="form-control" id="fechavencimiento" name="fechavencimiento" />
+                <span asp-validation-for"FechaVencimientoTarea" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a asp-action="Listar" asp-controller="Mantenedor" class="btn-warning">Volver a la lista de tareas</a>
+        </form>
+    </div>
+
+</div>

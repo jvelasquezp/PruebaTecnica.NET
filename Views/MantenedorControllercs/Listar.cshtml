@@ -1,0 +1,42 @@
+﻿@model List<TareaModel>
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="" card-header">
+        Lista de Tareas
+    </div>
+    <div class="card-body">
+        <a asp-action="Guardar" asp-controller="Mantenedor" class="btn btn-success">Crear Nueva Tarea</a>
+        <hr />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre Tarea</th>
+                    <th>Estado</th>
+                    <th>Fecha Vencimiento</th>
+                    <th>Fecha de creación</th>
+                    <th>Categoria</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tarea in Model)
+                    {
+                        <tr>
+                            <td>@tarea.NombreTarea</td>
+                            <td>@tarea.EstadoTarea</td>
+                            <td>@tarea.FechaVencimientoTarea.ToString("dd/MM/yyyy")</td>
+                            <td>@tarea.FechaCreacionTarea.ToString("dd/MM/yyyy")</td>
+                            <td>@tarea.IdCategoria</td>
+                            <td>
+                            <a asp-action="Editar" asp-controller="Mantenedor" class="btn btn-primary btn-sm" asp-route-IdTarea="@tarea.IdTarea">Editar Tarea</a>
+                            </td>
+                        </tr>
+                }
+                </tbody>
+        </table>
+    </div>
+
+</div>

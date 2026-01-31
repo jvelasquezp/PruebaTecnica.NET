@@ -1,34 +1,38 @@
+using Microsoft.EntityFrameworkCore;
+using App2.Infraestructure;
+using App2.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
+builder.Services.AddHostedService<TareasVencidas>();
+builder.Services.AddScoped<CategoriaModel>();
+builder.Services.AddDbContext<Api>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+builder.Services.AddOpenApi();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
 var app = builder.Build();
 
-app.Urls.Add("http://localhost:5000");
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+}
+app.UseRouting();
 
-app.MapGet("/", () => "Hello World!");
+app.UseAuthorization();
 
-app.MapGet("/{cityName}/weather", GetWeatherByCity);
+app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Mantenedor}/{action=Listar}/{id?}")
+    .WithStaticAssets();
+
 
 app.Run();
-
-
-Weather GetWeatherByCity(string cityName)
-{
-    app.Logger.LogInformation($"Weather requested for {cityName}.");
-    var weather = new Weather(cityName);
-    return weather;
-}
-
-public record Weather
-{
-    public string City { get; set; }
-
-    public Weather(string city)
-    {
-        City = city;
-        Conditions = "Cloudy";
-        // Temperature here is in celsius degrees, hence the 0-40 range.
-        Temperature = new Random().Next(0,40).ToString();
-    }
-
-    public string Conditions { get; set; }
-    public string Temperature { get; set; }
-}
